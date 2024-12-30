@@ -1,0 +1,17 @@
+# Feature store and model registry
+hopsworks
+
+# Be more efficient when making REST (Http) requests
+requests-cache==1.2.0
+retry-requests==2.0.0
+
+# ML framework libraries
+xgboost==2.0.3
+scikit-learn==1.4.1
+
+# Plot charts
+matplotlib==3.8.3
+python-dotenv==1.0.1
+
+# Gold Prices from Yahoo Finance
+yfinance==0.2.50
