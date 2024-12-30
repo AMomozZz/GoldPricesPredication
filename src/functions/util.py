@@ -9,7 +9,7 @@ import json
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 from matplotlib.ticker import MultipleLocator
-import openmeteo_requests
+# import openmeteo_requests
 import requests_cache
 from retry_requests import retry
 import hopsworks
