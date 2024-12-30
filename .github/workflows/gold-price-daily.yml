@@ -32,7 +32,7 @@ jobs:
         env:
           HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
         run: |
-          cd notebooks/ch03
+          cd src
           jupyter nbconvert --to notebook --execute 3_gold_prices_feature_pipeline.ipynb
           jupyter nbconvert --to notebook --execute 5_gold_prices_batch_inference.ipynb
 
