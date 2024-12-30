@@ -15,3 +15,7 @@ python-dotenv==1.0.1
 
 # Gold Prices from Yahoo Finance
 yfinance==0.2.50
+
+geopy
+openmeteo_requests
+great_expectations==0.18.21
