@@ -7,7 +7,7 @@ retry-requests==2.0.0
 
 # ML framework libraries
 xgboost==2.0.3
-scikit-learn
+scikit-learn==1.4.1.post1
 
 # Plot charts
 matplotlib==3.8.3
