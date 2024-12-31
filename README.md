@@ -1,44 +1,63 @@
-# Building Machine Learning Systems with a Feature Store
+# ID2223Project
 
-This project is based on the O'Reilly book "Building Machine Learning Systems with a Feature Store: Batch, Real-Time, and LLMs". It provides examples and tutorials on how to build and deploy machine learning systems using feature stores.
+## Description
 
-## ML System Examples
+This repository is a course final project for ID2223 Scalable Machine Learning and Deep Learning in KTH. And here is the motivation of this project:
 
-Explore the dashboards for example ML systems [here](https://amomozzz.github.io/mlfs-book/).
+Managing financial assets effectively is a critical concern for modern individuals and organizations. Therefore, we implement this project to predict daily gold prices and try to analyze the relationship between USD exchange rate fluctuations and gold price movements. By using everyday exchange rates and gold prices, this project aims to provide actionable insights for informed decision-making. Using multi-output regression and  time-series prediction models, we will evaluate the impact of currency value changes on gold prices. The results will be presented through the dashboard hosted on GitHub Page, enabling users to explore predictions and analyze trends with ease.
 
-## Course Comparison
+To meet the requirement of the course project, we need to:
 
-| Course                         | MLOps | LLMs             | Feature/Training/Inference | Working AI Systems | Focus |
-|--------------------------------|-------|------------------|----------------------------|--------------------|-------|
-| Building AI Systems (O'Reilly) | Yes   | Fine-Tuning & RAG| Yes                        | High               | Project-based, Software Engineering, Fundamentals |
-| [Made With ML](https://madewithml.com/) | No    | Yes            | No                         | No                 | Software Engineering, Model Training |
-| [7 Steps MLOps](https://www.pauliusztin.me/courses/the-full-stack-7-steps-mlops-framework) | Yes   | Separate Course | Yes                        | Low                | Learning Tools and Project |
+- Manage dynamic data sources
+- Train models and make predictions
+- Deploy pipelines to build the system
 
-## Project Structure
+## Technologies & APIs
 
-- **data/**: Contains datasets and API keys.
-- **docs/**: Documentation files.
-- **notebooks/**: Jupyter notebooks for different chapters and examples.
-- **.github/**: GitHub workflows for CI/CD.
-- **LICENSE**: License information.
-- **README.md**: This file.
+**yfinance**: Fetch Yahoo Finance data to generate data sets.
 
-## Getting Started
+**Frankfurter**: Fetch exchange rate data to generate data sets.
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/your-repo/mlfs-book.git
-    cd mlfs-book
-    ```
+**XGBoost**: Train and predict for multi-output regression and time series forecasting tasks.
 
-2. Install the required dependencies:
-    ```sh
-    pip install -r notebooks/[chapter]/requirements.txt
-    ```
+**Hopsworks**: Manage and store features and model registry.
 
-3. Explore the notebooks in the `notebooks/` directory to learn and run different examples.
+**GitHub Page**: Deploy dashboard online.
+
+## Structure & Our Work Flow
+
+![structure](data/structure.png)
+
+First, we use `yfinance` and `Frankfurter` to implement a tool for fetching Yahoo Finance gold prices history data and exchange rate data. We create DataFrames from those data and create feature groups on Hopsworks through [1_gold_prices_feature_backfill.ipynb](1_gold_prices_feature_backfill.ipynb).
+
+Secondly, we retrieved historical exchange rate from Hopsworks and trained a multi-output regression model using `XGBoost`. By integrating exchange rate data from previous days, the model predicts the exchange rate changes for multiple currency pairs for the following day. This approach was used to make predictions for 5 consecutive days, and the model was uploaded to the Hopsworks file system through the [2_exchange_rates_forecast_training_pipeline.ipynb](2_exchange_rates_forecast_training_pipeline.ipynb). Here is a chart illustrates the exchange rate changes of one of the currencies predicted by our model, demonstrating relatively accurate predictions.
+
+![output](src/exchange_predict_model/images/hkd_exchange_rate.png)
+
+Then we deploy [3_gold_prices_feature_pipeline.ipynb](3_gold_prices_feature_pipeline.ipynb) on `GitHub Actions` to update the latest data to Hopsworks every business day. Here, we use the previously trained model to predict exchange rates for the next 5 days consecutively based on the exchange rates from the previous 10 business days. The predicted values, along with the actual values of the current day, are then backfilled into the corresponding feature groups in Hopsworks.
+
+After that, we retrieved historical feature groups from Hopsworks and trained the final model to predict gold prices for the next 5 days using `XGBoost`. The model was uploaded to the Hopsworks file system through the [4_gold_prices_training_pipeline.ipynb](4_gold_prices_training_pipeline.ipynb). Here is a chart illustrates the gold price changes predicted by our model, demonstrating relatively accurate predictions.
+
+![output](src/gold_price_model/images/gold_price_hindcast.png)
+
+Finally, we deploy [5_gold_prices_batch_inference.ipynb](5_gold_prices_batch_inference.ipynb) on `GitHub Actions` to prdict the gold prices on business days and update GitHub Pages online dashboard for visualizing the prediction results.
+
+## How to Run
+
+1. Clone this repo.
+2. Configure the Canda virtual environment and install [requirements](requirements.txt).
+3. Create accounts on [hopsworks.ai](https://www.hopsworks.ai/), create/cofigure necessary API keys and tokens.
+4. Run all [1_gold_prices_feature_backfill.ipynb](1_gold_prices_feature_backfill.ipynb), [2_exchange_rates_forecast_training_pipeline.ipynb](2_exchange_rates_forecast_training_pipeline.ipynb), [3_gold_prices_feature_pipeline.ipynb](3_gold_prices_feature_pipeline.ipynb), [4_gold_prices_training_pipeline.ipynb](4_gold_prices_training_pipeline.ipynb) and [5_gold_prices_batch_inference.ipynb](5_gold_prices_batch_inference.ipynb) in order.
+5. Push the repo to your GitHub and it will automatically update this project's GitHub Pages every business day.
+
+## Gradio app
+
+[GitHub Page](https://amomozzz.github.io/ID2223_project/)
+
+## Contributors
+
+The contributors of this repo are Long Ma and Yining Hou.
 
 ## License
 
 This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
-

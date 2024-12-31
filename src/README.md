@@ -28,19 +28,19 @@ To meet the requirement of the course project, we need to:
 
 ![structure](../data/structure.png)
 
-First, we use `yfinance` and `Frankfurter` to implement a tool for fetching Yahoo Finance gold prices history data and exchange rate data. We create DataFrames from those data and create feature groups on Hopsworks through ***1_gold_prices_feature_backfill.ipynb***.
+First, we use `yfinance` and `Frankfurter` to implement a tool for fetching Yahoo Finance gold prices history data and exchange rate data. We create DataFrames from those data and create feature groups on Hopsworks through [1_gold_prices_feature_backfill.ipynb](1_gold_prices_feature_backfill.ipynb).
 
-Secondly, we retrieved historical exchange rate from Hopsworks and trained a multi-output regression model using `XGBoost`. By integrating exchange rate data from previous days, the model predicts the exchange rate changes for multiple currency pairs for the following day. This approach was used to make predictions for 5 consecutive days, and the model was uploaded to the Hopsworks file system through the ***2_exchange_rates_forecast_training_pipeline.ipynb***. Here is a chart illustrates the exchange rate changes of one of the currencies predicted by our model, demonstrating relatively accurate predictions.
+Secondly, we retrieved historical exchange rate from Hopsworks and trained a multi-output regression model using `XGBoost`. By integrating exchange rate data from previous days, the model predicts the exchange rate changes for multiple currency pairs for the following day. This approach was used to make predictions for 5 consecutive days, and the model was uploaded to the Hopsworks file system through the [2_exchange_rates_forecast_training_pipeline.ipynb](2_exchange_rates_forecast_training_pipeline.ipynb). Here is a chart illustrates the exchange rate changes of one of the currencies predicted by our model, demonstrating relatively accurate predictions.
 
 ![output](exchange_predict_model/images/hkd_exchange_rate.png)
 
-Then we deploy ***3_gold_prices_feature_pipeline.ipynb*** on `GitHub Actions` to update the latest data to Hopsworks every business day. Here, we use the previously trained model to predict exchange rates for the next 5 days consecutively based on the exchange rates from the previous 10 business days. The predicted values, along with the actual values of the current day, are then backfilled into the corresponding feature groups in Hopsworks.
+Then we deploy [3_gold_prices_feature_pipeline.ipynb](3_gold_prices_feature_pipeline.ipynb) on `GitHub Actions` to update the latest data to Hopsworks every business day. Here, we use the previously trained model to predict exchange rates for the next 5 days consecutively based on the exchange rates from the previous 10 business days. The predicted values, along with the actual values of the current day, are then backfilled into the corresponding feature groups in Hopsworks.
 
-After that, we retrieved historical feature groups from Hopsworks and trained the final model to predict gold prices for the next 5 days using `XGBoost`. The model was uploaded to the Hopsworks file system through the ***4_gold_prices_forecast_training_pipeline.ipynb***. Here is a chart illustrates the gold price changes predicted by our model, demonstrating relatively accurate predictions.
+After that, we retrieved historical feature groups from Hopsworks and trained the final model to predict gold prices for the next 5 days using `XGBoost`. The model was uploaded to the Hopsworks file system through the [4_gold_prices_training_pipeline.ipynb](4_gold_prices_training_pipeline.ipynb). Here is a chart illustrates the gold price changes predicted by our model, demonstrating relatively accurate predictions.
 
 ![output](gold_price_model/images/gold_price_hindcast.png)
 
-Finally, we use GitHub Pages to deploy an online dashboard for visualizing the prediction results.
+Finally, we deploy [5_gold_prices_batch_inference.ipynb](5_gold_prices_batch_inference.ipynb) on `GitHub Actions` to prdict the gold prices on business days and update GitHub Pages online dashboard for visualizing the prediction results.
 
 ## How to Run
 
