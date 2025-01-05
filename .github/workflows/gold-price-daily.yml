@@ -3,7 +3,7 @@ name: gold-price-daily
 on:
   workflow_dispatch:
   schedule:
-    - cron: '01 17 * * *'
+    - cron: '05 21 * * *'
 
 jobs:
   schedule_pipelines:
