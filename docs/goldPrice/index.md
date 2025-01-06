@@ -2,8 +2,6 @@
 
 ![Hopsworks Logo](../titanic/assets/img/logo.png)
 
-{% include air-quality.html %}
-
 ![Forecast](./assets/img/gold_price_forecast.png)
 
 ## Model Performance Monitoring
