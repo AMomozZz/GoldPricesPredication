@@ -1,4 +1,4 @@
-# ID2223Project
+# Predicting Gold Prices Using USD Exchange Rate Fluctuations
 
 ## Description
 
